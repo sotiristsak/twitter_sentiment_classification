@@ -1,0 +1,9 @@
+__pycache__/
+.idea/
+test.py
+.floydignore
+.floydexpt
+*.json
+test.py
+*.png
+plots/
