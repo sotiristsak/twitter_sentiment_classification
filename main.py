@@ -5,7 +5,7 @@ from utils import *
 
 if __name__ == "__main__":
 
-    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/17:/my_data python main.py
+    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/19:/my_data python main.py
 
     floydhub = True
     auxOutputs = True
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     OPTIMIZER = "adam"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
 
     #you can adjust them!
-    list_SEED = [11, 22, 33, 44]
+    list_SEED = [11]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
