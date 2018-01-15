@@ -170,7 +170,7 @@ def create_model(**kwargs):
 
 
     # Glove tower
-    glove_tower = create_embedding_tower(main_input, emb_mat_glove, emb_dim, max_seq_len, max_pool_win, nb_filters, filter_kernel, noise, drop_text_input, drop_emb_tower, attentionFlag, tool="glove")
+    # glove_tower = create_embedding_tower(main_input, emb_mat_glove, emb_dim, max_seq_len, max_pool_win, nb_filters, filter_kernel, noise, drop_text_input, drop_emb_tower, attentionFlag, tool="glove")
 
     # Word2Vec tower
     w2v_tower = create_embedding_tower(main_input, emb_mat_w2v, emb_dim, max_seq_len, max_pool_win, nb_filters, filter_kernel, noise, drop_text_input, drop_emb_tower, attentionFlag, tool="w2v")
@@ -191,12 +191,12 @@ def create_model(**kwargs):
     stanford_tower = create_stanford_tower(stanford_input)
 
     # Auxiliary outputs
-    auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
+    # auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
     auxiliary_output_w2v = Dense(out_dim, activation='sigmoid', name='aux_output_w2v')(w2v_tower)
     auxiliary_output_pos = Dense(out_dim, activation='sigmoid', name='aux_output_pos')(pos_tower)
 
     # Merge
-    castle = keras.layers.concatenate([glove_tower, w2v_tower, features_input, pos_tower, stanford_tower], name="castle_concatenation")
+    castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower], name="castle_concatenation")
     # castle = Flatten()(castle)
 
     castle = Dropout(drop_castle, name="dropout_after_merge")(castle)
@@ -204,7 +204,7 @@ def create_model(**kwargs):
     main_output = Dense(out_dim, activation='softmax', name="predictions")(castle)
 
     if auxOutputsFlag:
-        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_glove, auxiliary_output_w2v, auxiliary_output_pos])
+        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])
     else:
         model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=main_output)
 
@@ -229,7 +229,7 @@ def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanfor
 
     for epoch in range(epochs):
         if aux_outputs_flag:
-            model_.fit([x_train_, features_train_, pos_train_, stanford_train_], [y_train_, y_train_, y_train_, y_train_],
+            model_.fit([x_train_, features_train_, pos_train_, stanford_train_], [y_train_, y_train_, y_train_],
                        batch_size=batch,
                        epochs=1,
                        validation_split=0.05)

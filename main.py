@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
 
     #constants
-    EMBEDDING_TOOL = "Glove + Word2Vec"
+    EMBEDDING_TOOL = "Word2Vec"
     POS_FILTER_KERNEL_SIZE = [2, 3, 4]
     NOISE_INPUT = 0.02
     DROP_TEXT_INPUT = 0.4
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
 
     #you can adjust them!
-    list_SEED = [11]
+    list_SEED = [22]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
