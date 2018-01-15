@@ -42,7 +42,7 @@ if __name__ == "__main__":
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
     list_MIN_IMPROVEMENT = [0.00001]
-    list_IMPROVEMENT_PATIENCE = [20]
+    list_IMPROVEMENT_PATIENCE = [25]
     list_EPOCHS = [200]
     list_BATCH_SIZE = [5000]
 
