@@ -34,7 +34,7 @@ if __name__ == "__main__":
     DROP_TEXT_INPUT = 0.4
     DROP_CASTLE = 0.2
     DROP_EMB_TOWER = 0.2
-    OPTIMIZER = "adam"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
+    OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
 
     #you can adjust them!
     list_SEED = [11]
