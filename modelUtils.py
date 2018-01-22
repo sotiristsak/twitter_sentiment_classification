@@ -201,7 +201,7 @@ def create_model(**kwargs):
 
     castle = Dropout(drop_castle, name="dropout_after_merge")(castle)
     castle = Dense(nb_filters, activation='relu', name="castle_dense")(castle)
-    main_output = Dense(out_dim, activation='softmax', name="predictions")(castle)
+    main_output = Dense(out_dim, activation='sigmoid', name="predictions")(castle)
 
     if auxOutputsFlag:
         model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])
