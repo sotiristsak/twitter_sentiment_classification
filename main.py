@@ -39,7 +39,7 @@ if __name__ == "__main__":
     L2 = 0.01
 
     #you can adjust them!
-    list_SEED = [22]
+    list_SEED = [11]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
@@ -85,6 +85,8 @@ if __name__ == "__main__":
                              drop_text_input=DROP_TEXT_INPUT,
                              drop_emb_tower=DROP_EMB_TOWER,
                              drop_castle=DROP_CASTLE,
+                             l1=L1,
+                             l2=L2,
                              stanford_shape=stanford_train.shape,
                              attentionFlag=attention,
                              auxOutputsFlag=auxOutputs)
@@ -108,9 +110,7 @@ if __name__ == "__main__":
                                                            floydhub,
                                                            auxOutputs,
                                                            saveWeights,
-                                                           OPTIMIZER,
-                                                           L1,
-                                                           L2)
+                                                           OPTIMIZER)
 
         log_to_json(EMBEDDING_DIM,
                     list_of_avg_recalls.index(max(list_of_avg_recalls)) + 1,

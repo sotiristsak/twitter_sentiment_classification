@@ -162,6 +162,8 @@ def create_model(**kwargs):
     drop_text_input = kwargs.get('drop_text_input', None)
     drop_emb_tower = kwargs.get('drop_emb_tower', None)
     drop_castle = kwargs.get('drop_castle', None)
+    l1 = kwargs.get('l1', None)
+    l2 = kwargs.get('l2', None)
     stanford_shape = kwargs.get('stanford_shape', None)
     attentionFlag = kwargs.get('attentionFlag', None)
     auxOutputsFlag = kwargs.get('auxOutputsFlag', None)
@@ -201,8 +203,16 @@ def create_model(**kwargs):
     # castle = Flatten()(castle)
 
     castle = Dropout(drop_castle, name="dropout_after_merge")(castle)
-    castle = Dense(nb_filters, activation='relu', name="castle_dense")(castle)
-    main_output = Dense(out_dim, activation='sigmoid', name="predictions")(castle)
+    castle = Dense(nb_filters,
+                   activation='relu',
+                   name="castle_dense",
+                   bias_regularizer=regularizers.l1(l1),
+                   kernel_regularizer=regularizers.l2(l2))(castle)
+    main_output = Dense(out_dim,
+                        activation='sigmoid',
+                        name="predictions",
+                        bias_regularizer=regularizers.l1(l1),
+                        kernel_regularizer=regularizers.l2(l2))(castle)
 
     if auxOutputsFlag:
         model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])
@@ -218,11 +228,10 @@ def create_model(**kwargs):
 def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanford_train_,
                         x_test_, y_test_, features_test_, pos_test_, stanford_test_,
                         epochs, batch, seed, min_improvement, imp_patience,
-                        floydhub_flag, aux_outputs_flag, save_weights_flag, optimizer, l1, l2):
+                        floydhub_flag, aux_outputs_flag, save_weights_flag, optimizer):
     # train model
     model_.compile(loss='categorical_crossentropy',
-                   optimizer=optimizer,
-                   regularizers=regularizers.l1_l2(l1, l2))
+                   optimizer=optimizer)
 
     epochAvgRecall = []
     recalls = []
