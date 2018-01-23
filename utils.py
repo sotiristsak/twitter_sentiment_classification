@@ -54,7 +54,7 @@ def avg_recall_on_training_end(auxOutputsFlag, model, x_test, y_test, features_t
 
 def log_to_json(dim, epochs, max_seq_len, max_nb_words, batch, seed, tool, auxOutputsFlag, attention,
                 nb_filters, kernel, pos_kernel, max_pool, recall, recalls, noise,
-                drop_text_input, drop_castle, drop_emb_tower, file, optimizer):
+                drop_text_input, drop_castle, drop_emb_tower, file, optimizer, l1, l2):
 
     if not os.path.isfile(file):
         open(file, 'a').close()
@@ -82,6 +82,8 @@ def log_to_json(dim, epochs, max_seq_len, max_nb_words, batch, seed, tool, auxOu
                  'POSFilterKernelSize': pos_kernel,
                  'MaxPoolingWindow': max_pool,
                  'NoiseInput': noise,
+                 'L1': l1,
+                 'L2': l2,
                  'DropTextInput': drop_text_input,
                  'DropCastle': drop_castle,
                  'DropEmbTower': drop_emb_tower,

@@ -35,6 +35,8 @@ if __name__ == "__main__":
     DROP_CASTLE = 0.2
     DROP_EMB_TOWER = 0.2
     OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
+    L1 = 0.01  # regularization
+    L2 = 0.01
 
     #you can adjust them!
     list_SEED = [22]
@@ -106,7 +108,9 @@ if __name__ == "__main__":
                                                            floydhub,
                                                            auxOutputs,
                                                            saveWeights,
-                                                           OPTIMIZER)
+                                                           OPTIMIZER,
+                                                           L1,
+                                                           L2)
 
         log_to_json(EMBEDDING_DIM,
                     list_of_avg_recalls.index(max(list_of_avg_recalls)) + 1,
@@ -128,5 +132,7 @@ if __name__ == "__main__":
                     DROP_CASTLE,
                     DROP_EMB_TOWER,
                     JSON_FILE,
-                    OPTIMIZER)
+                    OPTIMIZER,
+                    L1,
+                    L2)
 

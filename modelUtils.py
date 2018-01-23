@@ -2,6 +2,7 @@ import keras
 from keras.models import Model
 from keras.layers import Dense, Input, GlobalMaxPooling1D, Dropout, Flatten, GaussianNoise, \
     Conv1D, MaxPooling1D, Embedding, Reshape, Permute, LSTM, Bidirectional
+from keras import regularizers
 from keras.utils import plot_model
 from utils import *
 
@@ -217,10 +218,11 @@ def create_model(**kwargs):
 def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanford_train_,
                         x_test_, y_test_, features_test_, pos_test_, stanford_test_,
                         epochs, batch, seed, min_improvement, imp_patience,
-                        floydhub_flag, aux_outputs_flag, save_weights_flag, optimizer):
+                        floydhub_flag, aux_outputs_flag, save_weights_flag, optimizer, l1, l2):
     # train model
     model_.compile(loss='categorical_crossentropy',
-                   optimizer=optimizer)
+                   optimizer=optimizer,
+                   regularizers=regularizers.l1_l2(l1, l2))
 
     epochAvgRecall = []
     recalls = []
