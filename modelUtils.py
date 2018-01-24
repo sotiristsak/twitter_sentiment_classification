@@ -164,7 +164,6 @@ def create_model(**kwargs):
     drop_castle = kwargs.get('drop_castle', None)
     l1 = kwargs.get('l1', None)
     l2 = kwargs.get('l2', None)
-    initializer = kwargs.get('initializer', None)
     stanford_shape = kwargs.get('stanford_shape', None)
     attentionFlag = kwargs.get('attentionFlag', None)
     auxOutputsFlag = kwargs.get('auxOutputsFlag', None)
@@ -207,13 +206,11 @@ def create_model(**kwargs):
     castle = Dense(nb_filters,
                    activation='relu',
                    name="castle_dense",
-                   bias_regularizer=regularizers.l1(l1),
-                   kernel_initializer=initializer)(castle)
+                   bias_regularizer=regularizers.l1(l1))(castle)
     main_output = Dense(out_dim,
                         activation='sigmoid',
                         name="predictions",
-                        bias_regularizer=regularizers.l1(l1),
-                        kernel_initializer=initializer)(castle)
+                        bias_regularizer=regularizers.l1(l1))(castle)
 
     if auxOutputsFlag:
         model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])

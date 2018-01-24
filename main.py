@@ -40,7 +40,6 @@ if __name__ == "__main__":
     L1 = 0.01  # regularization
     L2 = 0.01
     # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
-    INITIALIZER = None
 
     #you can adjust them!
     list_SEED = [1111, 2222, 3333, 4444, 5555]
@@ -91,7 +90,6 @@ if __name__ == "__main__":
                              drop_castle=DROP_CASTLE,
                              l1=L1,
                              l2=L2,
-                             initializer=INITIALIZER,
                              stanford_shape=stanford_train.shape,
                              attentionFlag=attention,
                              auxOutputsFlag=auxOutputs)
