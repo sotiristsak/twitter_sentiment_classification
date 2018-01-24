@@ -195,8 +195,8 @@ def create_model(**kwargs):
 
     # Auxiliary outputs
     # auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
-    auxiliary_output_w2v = Dense(out_dim, activation='sigmoid', name='aux_output_w2v', kernel_initializer=initializer)(w2v_tower)
-    auxiliary_output_pos = Dense(out_dim, activation='sigmoid', name='aux_output_pos', kernel_initializer=initializer)(pos_tower)
+    auxiliary_output_w2v = Dense(out_dim, activation='sigmoid', name='aux_output_w2v')(w2v_tower)
+    auxiliary_output_pos = Dense(out_dim, activation='sigmoid', name='aux_output_pos')(pos_tower)
 
     # Merge
     castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower], name="castle_concatenation")
