@@ -39,7 +39,8 @@ if __name__ == "__main__":
     OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
     L1 = 0.01  # regularization
     L2 = 0.01
-    INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
+    # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
+    INITIALIZER = None
 
     #you can adjust them!
     list_SEED = [1111, 2222, 3333, 4444, 5555]
@@ -138,5 +139,6 @@ if __name__ == "__main__":
                     JSON_FILE,
                     OPTIMIZER,
                     L1,
-                    L2)
+                    L2,
+                    less_data)
 
