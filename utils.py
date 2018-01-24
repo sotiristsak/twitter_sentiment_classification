@@ -109,7 +109,7 @@ def save_weights(model, seed, epoch, recall, floydhub):
     model.save_weights(filename)
 
 
-def load(floydhub):
+def load(floydhub, less_data):
     # load data and labels from file
     print("loading data and labels")
     if floydhub:
@@ -144,7 +144,23 @@ def load(floydhub):
 
     print("Maximum of features array: %s" % features_train_.max())
 
-    return data_train_, data_test_, labels_train_, labels_test_, features_train_, features_test_, embedding_matrix_glove_, embedding_matrix_word2vec_, pos_train_, pos_test_, pos_embedding_matrix_, stanford_train_, stanford_test_
+    if less_data:
+        return data_train_[0:1000], \
+               data_test_[0:100], \
+               labels_train_[0:1000], \
+               labels_test_[0:100], \
+               features_train_[0:1000], \
+               features_test_[0:100], \
+               embedding_matrix_glove_, \
+               embedding_matrix_word2vec_, \
+               pos_train_[0:1000], \
+               pos_test_[0:100], \
+               pos_embedding_matrix_, \
+               stanford_train_[0:1000], \
+               stanford_test_[0:100]
+
+    else:
+        return data_train_, data_test_, labels_train_, labels_test_, features_train_, features_test_, embedding_matrix_glove_, embedding_matrix_word2vec_, pos_train_, pos_test_, pos_embedding_matrix_, stanford_train_, stanford_test_
 
 
 def split_data(data_, labels_, features_):

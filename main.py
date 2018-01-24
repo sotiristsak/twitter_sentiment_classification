@@ -9,6 +9,7 @@ if __name__ == "__main__":
     # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/19:/my_data python main.py
 
     floydhub = True
+    less_data = True
     auxOutputs = True
     attention = True
     saveWeights = False
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
     L1 = 0.01  # regularization
     L2 = 0.01
-    INITIALIZER = initializers.RandomNormal(0, stddev=0.001)
+    INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
 
     #you can adjust them!
     list_SEED = [1111, 2222, 3333, 4444, 5555]
@@ -51,7 +52,7 @@ if __name__ == "__main__":
     list_BATCH_SIZE = [5000]
 
 
-    [data_train, data_test, labels_train, labels_test, features_train, features_test, embedding_matrix_glove, embedding_matrix_word2vec, pos_train, pos_test, pos_embedding_matrix, stanford_train, stanford_test] = load(floydhub)
+    [data_train, data_test, labels_train, labels_test, features_train, features_test, embedding_matrix_glove, embedding_matrix_word2vec, pos_train, pos_test, pos_embedding_matrix, stanford_train, stanford_test] = load(floydhub, less_data)
 
     # [x_train, y_train, x_val, y_val, features_train, features_val] = split_data(data, labels, features)
 
