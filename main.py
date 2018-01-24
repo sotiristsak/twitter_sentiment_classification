@@ -37,12 +37,12 @@ if __name__ == "__main__":
     DROP_CASTLE = 0.2
     DROP_EMB_TOWER = 0.2
     OPTIMIZER = "adadelta"  # sgd, rmsprop, adagrad, adadelta, adamadamax, nadam, tfoptimizer, adam
-    L1 = 0.01  # regularization
+    # L1 = 0.01  # regularization
     L2 = 0.01
     # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
 
     #you can adjust them!
-    list_SEED = [1111, 2222, 3333, 4444, 5555]
+    list_SEED = [1111, 2222, 3333]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
@@ -50,6 +50,7 @@ if __name__ == "__main__":
     list_IMPROVEMENT_PATIENCE = [25]
     list_EPOCHS = [200]
     list_BATCH_SIZE = [5000]
+    list_L1 = [1, 2, 3, 4, 5]
 
 
     [data_train, data_test, labels_train, labels_test, features_train, features_test, embedding_matrix_glove, embedding_matrix_word2vec, pos_train, pos_test, pos_embedding_matrix, stanford_train, stanford_test] = load(floydhub, less_data)
@@ -57,9 +58,9 @@ if __name__ == "__main__":
     # [x_train, y_train, x_val, y_val, features_train, features_val] = split_data(data, labels, features)
 
 
-    for SEED, NUMBER_OF_FILTERS, FILTER_KERNEL_SIZE, MAX_POOLING_WINDOW, MIN_IMPROVEMENT, IMPROVEMENT_PATIENCE, EPOCHS, BATCH_SIZE in \
+    for SEED, NUMBER_OF_FILTERS, FILTER_KERNEL_SIZE, MAX_POOLING_WINDOW, MIN_IMPROVEMENT, IMPROVEMENT_PATIENCE, EPOCHS, BATCH_SIZE, L1 in \
             [(SEED, NUMBER_OF_FILTERS, FILTER_KERNEL_SIZE, MAX_POOLING_WINDOW, MIN_IMPROVEMENT,
-              IMPROVEMENT_PATIENCE, EPOCHS, BATCH_SIZE)
+              IMPROVEMENT_PATIENCE, EPOCHS, BATCH_SIZE, L1)
              for SEED in list_SEED
              for NUMBER_OF_FILTERS in list_NUMBER_OF_FILTERS
              for FILTER_KERNEL_SIZE in list_FILTER_KERNEL_SIZE
@@ -67,7 +68,8 @@ if __name__ == "__main__":
              for MIN_IMPROVEMENT in list_MIN_IMPROVEMENT
              for IMPROVEMENT_PATIENCE in list_IMPROVEMENT_PATIENCE
              for EPOCHS in list_EPOCHS
-             for BATCH_SIZE in list_BATCH_SIZE]:
+             for BATCH_SIZE in list_BATCH_SIZE
+             for L1 in list_L1]:
 
         np.random.seed(SEED)  # for reproducibility
 
