@@ -157,6 +157,7 @@ def create_model(**kwargs):
     pos_filter_kernel = kwargs.get('pos_filter_kernel', None)
     out_dim = kwargs.get('out_dim', None)
     feature_len = kwargs.get('features_len', None)
+    lexicons_len = kwargs.get('lexicons_len', None)
     pos_len = kwargs.get('pos_len', None)
     noise = kwargs.get('noise', None)
     drop_text_input = kwargs.get('drop_text_input', None)
@@ -193,13 +194,16 @@ def create_model(**kwargs):
     stanford_input = Input(shape=(stanford_shape[1], stanford_shape[2],), dtype='float32', name="stanford_input")
     stanford_tower = create_stanford_tower(stanford_input)
 
+    # Lexicon tower
+    lexicons_input = Input(shape=(lexicons_len,), dtype='float32', name="lexicons_input")
+
     # Auxiliary outputs
     # auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
     auxiliary_output_w2v = Dense(out_dim, activation='sigmoid', name='aux_output_w2v')(w2v_tower)
     auxiliary_output_pos = Dense(out_dim, activation='sigmoid', name='aux_output_pos')(pos_tower)
 
     # Merge
-    castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower], name="castle_concatenation")
+    castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower, lexicons_input], name="castle_concatenation")
     # castle = Flatten()(castle)
 
     castle = Dropout(drop_castle, name="dropout_after_merge")(castle)
@@ -213,18 +217,18 @@ def create_model(**kwargs):
                         bias_regularizer=regularizers.l1(l1))(castle)
 
     if auxOutputsFlag:
-        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])
+        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input, lexicons_input], outputs=[main_output, auxiliary_output_w2v, auxiliary_output_pos])
     else:
-        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input], outputs=main_output)
+        model_ = Model(inputs=[main_input, features_input, pos_input, stanford_input, lexicons_input], outputs=main_output)
 
-    # plot_model(model_, to_file="plots/pos_lstm.png")
+    # plot_model(model_, to_file="plots/lexicons.png")
     model_.summary()
 
     return model_
 
 
-def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanford_train_,
-                        x_test_, y_test_, features_test_, pos_test_, stanford_test_,
+def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanford_train_, lexicons_train_,
+                        x_test_, y_test_, features_test_, pos_test_, stanford_test_, lexicons_test_,
                         epochs, batch, seed, min_improvement, imp_patience,
                         floydhub_flag, aux_outputs_flag, save_weights_flag, optimizer):
     # train model
@@ -238,17 +242,17 @@ def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanfor
 
     for epoch in range(epochs):
         if aux_outputs_flag:
-            model_.fit([x_train_, features_train_, pos_train_, stanford_train_], [y_train_, y_train_, y_train_],
+            model_.fit([x_train_, features_train_, pos_train_, stanford_train_, lexicons_train_], [y_train_, y_train_, y_train_],
                        batch_size=batch,
                        epochs=1,
                        validation_split=0.05)
         else:
-            model_.fit([x_train_, features_train_, pos_train_, stanford_train_], y_train_,
+            model_.fit([x_train_, features_train_, pos_train_, stanford_train_, lexicons_train_], y_train_,
                        batch_size=batch,
                        epochs=1,
                        validation_split=0.05)
 
-        [avg_recall, recall_p, recall_u, recall_n] = avg_recall_on_training_end(aux_outputs_flag, model_, x_test_, y_test_, features_test_, pos_test_, stanford_test_)
+        [avg_recall, recall_p, recall_u, recall_n] = avg_recall_on_training_end(aux_outputs_flag, model_, x_test_, y_test_, features_test_, pos_test_, stanford_test_, lexicons_test_)
         print("Average recall on Epoch " + str(epoch + 1) + "/" + str(epochs) + ": " + str(avg_recall))
 
         # serialize weights to HDF5

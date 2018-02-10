@@ -22,8 +22,8 @@ def class_recall(pred_classes, true_classes, class_label):
     return tp/(true_classes.count(class_id))
 
 
-def avg_recall_on_training_end(auxOutputsFlag, model, x_test, y_test, features_test, pos_test, stanford_test):
-        output = model.predict([x_test, features_test, pos_test, stanford_test])
+def avg_recall_on_training_end(auxOutputsFlag, model, x_test, y_test, features_test, pos_test, stanford_test, lexicon_test):
+        output = model.predict([x_test, features_test, pos_test, stanford_test, lexicon_test])
         pred_classes = []
         true_classes = []
 
@@ -127,6 +127,8 @@ def load(floydhub, less_data):
         pos_embedding_matrix_ = np.load("/my_data/pos_emb_matrix.npy")
         stanford_train_ = np.load("/my_data/stanford_TRAIN.npy")
         stanford_test_ = np.load("/my_data/stanford_TEST.npy")
+        lexicons_train_ = np.load("/my_data/lexicons_TRAIN.npy")
+        lexicons_test_ = np.load("/my_data/lexicons_TEST.npy")
     else:
         data_train_ = np.load("data/data_TRAIN.npy")
         data_test_ = np.load("data/data_TEST.npy")
@@ -141,6 +143,8 @@ def load(floydhub, less_data):
         pos_embedding_matrix_ = np.load("data/pos_emb_matrix.npy")
         stanford_train_ = np.load("data/stanford_TRAIN.npy")
         stanford_test_ = np.load("data/stanford_TEST.npy")
+        lexicons_train_ = np.load("data/lexicons_TRAIN.npy")
+        lexicons_test_ = np.load("data/lexicons_TEST.npy")
 
 
     print("Maximum of features array: %s" % features_train_.max())
@@ -158,10 +162,12 @@ def load(floydhub, less_data):
                pos_test_[0:100], \
                pos_embedding_matrix_, \
                stanford_train_[0:1000], \
-               stanford_test_[0:100]
+               stanford_test_[0:100],  \
+               lexicons_train_[0:1000], \
+               lexicons_test_[0:100]
 
     else:
-        return data_train_, data_test_, labels_train_, labels_test_, features_train_, features_test_, embedding_matrix_glove_, embedding_matrix_word2vec_, pos_train_, pos_test_, pos_embedding_matrix_, stanford_train_, stanford_test_
+        return data_train_, data_test_, labels_train_, labels_test_, features_train_, features_test_, embedding_matrix_glove_, embedding_matrix_word2vec_, pos_train_, pos_test_, pos_embedding_matrix_, stanford_train_, stanford_test_, lexicons_train_, lexicons_test_
 
 
 def split_data(data_, labels_, features_):

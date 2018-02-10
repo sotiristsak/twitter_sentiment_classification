@@ -6,10 +6,10 @@ from keras import initializers
 
 if __name__ == "__main__":
 
-    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/19:/my_data python main.py
+    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/20:/my_data python main.py
 
     floydhub = True
-    less_data = True
+    less_data = False
     auxOutputs = True
     attention = True
     saveWeights = False
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
 
     #you can adjust them!
-    list_SEED = [1111, 2222, 3333]
+    list_SEED = [11, 22, 33]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
@@ -50,10 +50,10 @@ if __name__ == "__main__":
     list_IMPROVEMENT_PATIENCE = [25]
     list_EPOCHS = [200]
     list_BATCH_SIZE = [5000]
-    list_L1 = [1, 2, 3, 4, 5]
+    list_L1 = [4]
 
 
-    [data_train, data_test, labels_train, labels_test, features_train, features_test, embedding_matrix_glove, embedding_matrix_word2vec, pos_train, pos_test, pos_embedding_matrix, stanford_train, stanford_test] = load(floydhub, less_data)
+    [data_train, data_test, labels_train, labels_test, features_train, features_test, embedding_matrix_glove, embedding_matrix_word2vec, pos_train, pos_test, pos_embedding_matrix, stanford_train, stanford_test, lexicons_train, lexicons_test] = load(floydhub, less_data)
 
     # [x_train, y_train, x_val, y_val, features_train, features_val] = split_data(data, labels, features)
 
@@ -85,6 +85,7 @@ if __name__ == "__main__":
                              pos_filter_kernel=POS_FILTER_KERNEL_SIZE,
                              out_dim=OUTPUT_DIM,
                              features_len=features_train.shape[1],
+                             lexicons_len=lexicons_train.shape[1],
                              pos_len=pos_train.shape[1],
                              noise=NOISE_INPUT,
                              drop_text_input=DROP_TEXT_INPUT,
@@ -102,11 +103,13 @@ if __name__ == "__main__":
                                                            features_train,
                                                            pos_train,
                                                            stanford_train,
+                                                           lexicons_train,
                                                            data_test,
                                                            labels_test,
                                                            features_test,
                                                            pos_test,
                                                            stanford_test,
+                                                           lexicons_test,
                                                            EPOCHS,
                                                            BATCH_SIZE,
                                                            SEED,
