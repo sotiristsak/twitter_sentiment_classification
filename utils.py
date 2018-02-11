@@ -127,8 +127,8 @@ def load(floydhub, less_data):
         pos_embedding_matrix_ = np.load("/my_data/pos_emb_matrix.npy")
         stanford_train_ = np.load("/my_data/stanford_TRAIN.npy")
         stanford_test_ = np.load("/my_data/stanford_TEST.npy")
-        lexicons_train_ = np.load("/my_data/lexicons_TRAIN.npy")
-        lexicons_test_ = np.load("/my_data/lexicons_TEST.npy")
+        lexicons_train_ = np.load("/my_data/lexicons_TRAIN_norm.npy")
+        lexicons_test_ = np.load("/my_data/lexicons_TEST_norm.npy")
     else:
         data_train_ = np.load("data/data_TRAIN.npy")
         data_test_ = np.load("data/data_TEST.npy")
@@ -143,8 +143,8 @@ def load(floydhub, less_data):
         pos_embedding_matrix_ = np.load("data/pos_emb_matrix.npy")
         stanford_train_ = np.load("data/stanford_TRAIN.npy")
         stanford_test_ = np.load("data/stanford_TEST.npy")
-        lexicons_train_ = np.load("data/lexicons_TRAIN.npy")
-        lexicons_test_ = np.load("data/lexicons_TEST.npy")
+        lexicons_train_ = np.load("data/lexicons_TRAIN_norm.npy")
+        lexicons_test_ = np.load("data/lexicons_TEST_norm.npy")
 
 
     print("Maximum of features array: %s" % features_train_.max())

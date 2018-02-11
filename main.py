@@ -6,7 +6,7 @@ from keras import initializers
 
 if __name__ == "__main__":
 
-    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/20:/my_data python main.py
+    # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/21:/my_data python main.py
 
     floydhub = True
     less_data = False
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
 
     #you can adjust them!
-    list_SEED = [5555]
+    list_SEED = [11, 22, 33]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
