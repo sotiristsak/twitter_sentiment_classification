@@ -15,7 +15,27 @@ def get_rnn(unit, tool, cells, bi=False, return_sequences=True, dropout=0.):
         return rnn
 
 
-def create_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_, filter_kernel, tool):
+def create_attention_vector(input_, nb_filters, filter_kernel, tool):
+
+    cnn = Conv1D(nb_filters, filter_kernel, activation='relu', name=tool + "_tower_covn1")(input_)  # dim: (n * m)
+
+    # trans = Reshape((int(cnn.shape[2]), int(cnn.shape[1])))(cnn)
+    trans = Permute((2, 1))(cnn)  # elpizo oti einai san to transpose
+
+    attention_vector = GlobalMaxPooling1D(name=tool + "_tower_globalmaxpooling")(trans)  # dim: (n)
+
+    attention_vector_reshape = Reshape((int(attention_vector.shape[1]), 1))(attention_vector)
+
+    # document_matrix_transpose = Reshape((int(document_matrix.shape[2]), int(document_matrix.shape[1])))(document_matrix)
+
+    attention_vector = keras.layers.dot([input_, attention_vector_reshape], axes=1)
+
+    attention_vector = Flatten()(attention_vector)
+
+    return attention_vector
+
+
+def create_embedding_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_, filter_kernel, tool):
     # Implement Embedding Attention Vector of "Lexicon Integrated CNN Models with Attention for Sentiment Analysis"
     # paper (Bonggun et al., 2017)
     # n: number of words
@@ -30,23 +50,7 @@ def create_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters
 
     document_matrix = embedding_layer(input_)  # dim: (n * d)
 
-    cnn = Conv1D(nb_filters_, filter_kernel, activation='relu', name=tool + "_tower_covn1")(
-        document_matrix)  # dim: (n * m)
-
-    # trans = Reshape((int(cnn.shape[2]), int(cnn.shape[1])))(cnn)
-    trans = Permute((2, 1))(cnn)  # elpizo oti einai san to transpose
-
-    attention_vector = GlobalMaxPooling1D(name=tool + "_tower_globalmaxpooling")(trans)  # dim: (n)
-
-    attention_vector_reshape = Reshape((int(attention_vector.shape[1]), 1))(attention_vector)
-
-    # document_matrix_transpose = Reshape((int(document_matrix.shape[2]), int(document_matrix.shape[1])))(document_matrix)
-
-    embedding_attention_vector = keras.layers.dot([document_matrix, attention_vector_reshape], axes=1)
-
-    embedding_attention_vector = Flatten()(embedding_attention_vector)
-
-    return embedding_attention_vector
+    return create_attention_vector(document_matrix, nb_filters_, filter_kernel, tool)
 
 
 def create_embedding_tower(input_, emb_mat_, emb_dim_, max_seq_len_, max_pool_win_, nb_filters_, filter_kernel_, noise_, drop_text_input_, drop_emb_tower_, attentionFlag_, tool):
@@ -67,7 +71,7 @@ def create_embedding_tower(input_, emb_mat_, emb_dim_, max_seq_len_, max_pool_wi
 
     # Attention tower
     if attentionFlag_:
-        attention_vec = create_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_,
+        attention_vec = create_embedding_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_,
                                                       filter_kernel=1, tool="attention" + tool)
         tower = keras.layers.concatenate([tower, attention_vec],
                                           name="attention_concatenation" + tool)
@@ -86,6 +90,21 @@ def create_stanford_tower(input_):
         tower = Dense(int(((int(input_.shape[1])*int(input_.shape[2])) / int(input_.shape[2])) * (int(input_.shape[2]) - i)), activation='sigmoid', name='stanford_dense_' + str(i))(tower)
 
     tower = Dense(int(input_.shape[2]), activation='sigmoid', name='stanford_dense')(tower)
+
+    return tower
+
+
+def create_lexicons_tower(input_, nb_filters_, noise_, dropout_, attentionFlag_):
+    
+    tower = GaussianNoise(noise_)(input_)
+    tower = Dropout(dropout_)(tower)
+
+    # Attention tower
+    if attentionFlag_:
+
+        attention_vector_reshape = Reshape((int(input_.shape[1]), 1))(input_)
+        attention_vector = keras.layers.dot([input_, attention_vector_reshape], axes=1)
+        tower = keras.layers.concatenate([tower, attention_vector], name="attention_concatenation_lexicons")
 
     return tower
 
@@ -116,7 +135,7 @@ def cnn_multi_filters(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_, nfi
 
     # Attention tower
     if attentionFlag_:
-        attention_vec = create_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_,
+        attention_vec = create_embedding_attention_vector(input_, emb_mat_, emb_dim_, max_seq_len_, nb_filters_,
                                                       filter_kernel=1, tool="attention" + tool)
         representation = keras.layers.concatenate([representation, attention_vec],
                                           name="attention_concatenation" + tool)
@@ -196,6 +215,7 @@ def create_model(**kwargs):
 
     # Lexicon tower
     lexicons_input = Input(shape=(lexicons_len,), dtype='float32', name="lexicons_input")
+    lexicons_tower = create_lexicons_tower(lexicons_input, nb_filters, noise, drop_emb_tower, attentionFlag)
 
     # Auxiliary outputs
     # auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
@@ -203,7 +223,7 @@ def create_model(**kwargs):
     auxiliary_output_pos = Dense(out_dim, activation='sigmoid', name='aux_output_pos')(pos_tower)
 
     # Merge
-    castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower, lexicons_input], name="castle_concatenation")
+    castle = keras.layers.concatenate([w2v_tower, features_input, pos_tower, stanford_tower, lexicons_tower], name="castle_concatenation")
     # castle = Flatten()(castle)
 
     castle = Dropout(drop_castle, name="dropout_after_merge")(castle)
