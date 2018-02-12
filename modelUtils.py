@@ -94,17 +94,33 @@ def create_stanford_tower(input_):
     return tower
 
 
-def create_lexicons_tower(input_, nb_filters_, noise_, dropout_, attentionFlag_):
+def create_lexicons_tower(input_, l1, nb_filters_, noise_, dropout_, attentionFlag_):
+
+    tower = Dense(200,
+                   activation='relu',
+                   name="lexicons_dense_1",
+                   bias_regularizer=regularizers.l1(l1))(input_)
+
+    tower = Dense(200,
+                  activation='relu',
+                  name="lexicons_dense_1",
+                  bias_regularizer=regularizers.l1(l1))(tower)
+
+    tower = Dense(50,
+                  activation='sigmoid',
+                  name="lexicons_dense_out",
+                  bias_regularizer=regularizers.l1(l1))(tower)
+
     
-    tower = GaussianNoise(noise_)(input_)
-    tower = Dropout(dropout_)(tower)
-
-    # Attention tower
-    if attentionFlag_:
-
-        attention_vector_reshape = Reshape((int(input_.shape[1]), 1))(input_)
-        attention_vector = keras.layers.dot([input_, attention_vector_reshape], axes=1)
-        tower = keras.layers.concatenate([tower, attention_vector], name="attention_concatenation_lexicons")
+    # tower = GaussianNoise(noise_)(input_)
+    # tower = Dropout(dropout_)(tower)
+    #
+    # # Attention tower
+    # if attentionFlag_:
+    #
+    #     attention_vector_reshape = Reshape((int(input_.shape[1]), 1))(input_)
+    #     attention_vector = keras.layers.dot([input_, attention_vector_reshape], axes=1)
+    #     tower = keras.layers.concatenate([tower, attention_vector], name="attention_concatenation_lexicons")
 
     return tower
 
@@ -215,7 +231,7 @@ def create_model(**kwargs):
 
     # Lexicon tower
     lexicons_input = Input(shape=(lexicons_len,), dtype='float32', name="lexicons_input")
-    lexicons_tower = create_lexicons_tower(lexicons_input, nb_filters, noise, drop_emb_tower, attentionFlag)
+    lexicons_tower = create_lexicons_tower(lexicons_input, l1, nb_filters, noise, drop_emb_tower, attentionFlag)
 
     # Auxiliary outputs
     # auxiliary_output_glove = Dense(out_dim, activation='sigmoid', name='aux_output_glove')(glove_tower)
