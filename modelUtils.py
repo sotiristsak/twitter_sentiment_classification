@@ -96,10 +96,11 @@ def create_stanford_tower(input_):
 
 def create_lexicons_tower(input_, l1, nb_filters_, noise_, dropout_, attentionFlag_):
 
+    tower = GaussianNoise(noise_)(input_)
     tower = Dense(200,
                    activation='relu',
                    name="lexicons_dense_1",
-                   bias_regularizer=regularizers.l1(l1))(input_)
+                   bias_regularizer=regularizers.l1(l1))(tower)
 
     tower = Dense(200,
                   activation='relu',
