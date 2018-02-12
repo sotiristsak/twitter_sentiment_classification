@@ -103,7 +103,7 @@ def create_lexicons_tower(input_, l1, nb_filters_, noise_, dropout_, attentionFl
 
     tower = Dense(200,
                   activation='relu',
-                  name="lexicons_dense_1",
+                  name="lexicons_dense_2",
                   bias_regularizer=regularizers.l1(l1))(tower)
 
     tower = Dense(50,
