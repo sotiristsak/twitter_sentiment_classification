@@ -311,7 +311,7 @@ def train_model(model_, x_train_, y_train_, features_train_, pos_train_, stanfor
             recalls.append([recall_p, recall_u, recall_n])
             isImproved.append(improvement)
 
-            print("Best so far: " + str(max(epochAvgRecall)))
+            print("Best so far: %s, found in epoch %s" % (max(epochAvgRecall), epochAvgRecall.index(max(epochAvgRecall)) + 1))
 
             if epoch >= imp_patience:
                 if True in isImproved[epoch - imp_patience:epoch+1]:  # to check the current epoch also
