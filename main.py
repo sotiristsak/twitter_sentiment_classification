@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # INITIALIZER = initializers.RandomNormal(0, stddev=0.01)
 
     #you can adjust them!
-    list_SEED = [11, 22, 33, 44, 55]
+    list_SEED = [11]
     list_NUMBER_OF_FILTERS = [256]
     list_FILTER_KERNEL_SIZE = [5]
     list_MAX_POOLING_WINDOW = [5]
