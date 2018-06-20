@@ -6,9 +6,10 @@ from keras import initializers
 
 if __name__ == "__main__":
 
+    # run on floyd
     # floyd run --gpu --data aleeex32/datasets/glove300allfeatures/21:/my_data python main.py
 
-    floydhub = True
+    floydhub = False  # for running on Floydhub.com
     less_data = False
     auxOutputs = True
     attention = True
