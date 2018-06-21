@@ -17,11 +17,11 @@ Files inside data folder are generated from: [odymao](https://github.com/odymao/
 conda create -n tensorflow pip python=3.5
 activate tensorflow
 ```
-...without GPU support:
+    ...without GPU support:
 ```
 pip install --ignore-installed --upgrade tensorflow
 ```
-...with GPU support:
+    ...with GPU support:
 ```
 pip install --ignore-installed --upgrade tensorflow-gpu 
 ```
