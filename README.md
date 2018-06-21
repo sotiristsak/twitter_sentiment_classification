@@ -9,8 +9,9 @@ Files inside data folder are generated from: https://github.com/odymao/Represent
     https://git-scm.com/downloads
 
 2.  Download repo, run:
-    'git clone https://github.com/sotiristsak/twitter_sentiment_classification.git'
-    'cd twitter_sentiment_classification'
+
+    git clone https://github.com/sotiristsak/twitter_sentiment_classification.git
+    cd twitter_sentiment_classification
     
 3.  Install dependencies, run:
     'pip install -r requirements.txt'
