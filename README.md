@@ -16,7 +16,7 @@ cd twitter_sentiment_classification
 ```
 
 3.  Install dependencies, run:
-    'pip install -r requirements.txt'
-    'cd twitter_sentiment_classification'
-
+```
+pip install -r requirements.txt
+```
 
