@@ -9,7 +9,7 @@ Files inside data folder are generated from: [odymao](https://github.com/odymao/
 1.  Download and setup [git](https://git-scm.com/downloads).
     
 
-2.  Download and setup [anaconda](https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe) (for installing Python 3.6 version).
+2.  Download and setup [anaconda](https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe) (for installing Python 3.6).
     
 
 3.  Install Tensorflow (with Anaconda):
