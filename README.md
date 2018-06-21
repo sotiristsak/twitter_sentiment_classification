@@ -18,7 +18,7 @@ conda create -n tensorflow pip python=3.5
 activate tensorflow
 ```
 
-###...without GPU support:
+### ...without GPU support:
 
     
     
@@ -26,7 +26,7 @@ activate tensorflow
 pip install --ignore-installed --upgrade tensorflow
 ```
 
-###...with GPU support:
+### ...with GPU support:
 
 ```
 pip install --ignore-installed --upgrade tensorflow-gpu 
