@@ -12,6 +12,20 @@ Files inside data folder are generated from: [odymao](https://github.com/odymao/
 2.  Download and setup [anaconda](https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe) (for installing Python 3.6 version).
     
 
+3.  Install Tensorflow (with Anaconda):
+```
+conda create -n tensorflow pip python=3.5
+activate tensorflow
+```
+...without GPU support:
+```
+pip install --ignore-installed --upgrade tensorflow
+```
+...with GPU support:
+```
+pip install --ignore-installed --upgrade tensorflow-gpu 
+```
+
 2.  Download repo, run:
 
 ```
