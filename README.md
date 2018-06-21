@@ -38,7 +38,7 @@ cd twitter_sentiment_classification
 pip install -r requirements.txt
 ```
 
-6.  Start raining, run:
+6.  Start training, run:
 ```
 python main.py
 ```
