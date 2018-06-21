@@ -18,7 +18,7 @@ conda create -n tensorflow pip python=3.5
 activate tensorflow
 ```
 
-...without GPU support:
+* ...without GPU support:
 
     
     
