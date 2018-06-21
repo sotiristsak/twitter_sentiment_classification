@@ -26,16 +26,19 @@ pip install --ignore-installed --upgrade tensorflow
 pip install --ignore-installed --upgrade tensorflow-gpu 
 ```
 
-2.  Download repo, run:
+4.  Download repo, run:
 
 ```
 git clone https://github.com/sotiristsak/twitter_sentiment_classification.git
-cd twitter_sentiment_classification
 ```
 
-3.  Install dependencies, run:
+5.  Install dependencies, run:
 ```
+cd twitter_sentiment_classification
 pip install -r requirements.txt
 ```
 
-[I'm an inline-style link](https://www.google.com)
+6.  Start raining, run:
+```
+python main.py
+```
