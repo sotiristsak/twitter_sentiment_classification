@@ -18,3 +18,9 @@ Files inside data folder are generated from: https://github.com/odymao/Represent
     'pip install -r requirements.txt'
     'cd twitter_sentiment_classification'
     
+Some basic Git commands are:
+```
+git status
+git add
+git commit
+```
