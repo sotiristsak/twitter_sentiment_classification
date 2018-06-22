@@ -48,3 +48,6 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
+
+## Run demo notebook on Google Colab
+[demo.ipynb](https://github.com/sotiristsak/twitter_sentiment_classification/blob/master/demo.ipynb)
